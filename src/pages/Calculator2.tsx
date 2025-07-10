@@ -58,10 +58,16 @@ export default function Calculator2() {
   });
 
   const getData = async (data: IInsuranceData) => {
-    const res = await calculate(data);
-    if (res.data) {
-      setCoef(res.data.vehicleTypeCoefficient);
-      setAmount(res.data.amount.toFixed(2));
+    try {
+      const res = await calculate(data);
+      if (res.data) {
+        setCoef(res.data.vehicleTypeCoefficient);
+        setAmount(res.data.amount.toFixed(2));
+      } else {
+        setCoef('1');
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -76,14 +82,14 @@ export default function Calculator2() {
       ...prev,
       vehicleTypeCoefficient: coef,
     }));
+
     try {
       const res = await createPolicy({
         ...formData,
-        phoneNumber: formData.phoneNumber.replace('+', ''),
+        phoneNumber: formData.phoneNumber,
         vehicleTypeCoefficient: coef,
       }).unwrap();
 
-      // Проверяем, есть ли у ответа поля result и message (ошибка)
       if (
         typeof res === 'object' &&
         res !== null &&
@@ -95,7 +101,7 @@ export default function Calculator2() {
       } else {
         setErrorMessage(null);
       }
-      console.log('createPolicy response:', res);
+      window.open(res.paymentUrl, "_blank", "noopener,noreferrer");
     } catch (err) {
       // Если сервер вернул ошибку с result === 206
       const errorData = (err as any)?.data;
@@ -108,9 +114,9 @@ export default function Calculator2() {
       ) {
         setErrorMessage(errorData.message);
       } else {
-        setErrorMessage('Произошла ошибка при создании полиса');
+        console.log(errorData.keep24.message);
+        setErrorMessage(errorData.keep24.message || 'Ошибка');
       }
-      console.log('createPolicy error:', err);
     }
   };
 

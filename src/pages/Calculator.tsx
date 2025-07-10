@@ -41,6 +41,7 @@ function getFutureDate(period: string): string {
 export default function Calculator() {
   const [calculate] = useCalculateMutation();
   const [createPolicy, { isLoading }] = useCreatePolicyMutation();
+  const [coef, setCoef] = useState('');
   const [formData, setFormData] = useState<IInsuranceData>(
     JSON.parse(localStorage.getItem('calculateData') || '{}')
   );
@@ -57,13 +58,16 @@ export default function Calculator() {
   });
 
   const getData = async (data: IInsuranceData) => {
-    const res = await calculate(data);
-    if (res.data) {
-      setFormData((prev) => ({
-        ...prev,
-        vehicleTypeCoefficient: res.data.vehicleTypeCoefficient,
-      }));
-      setAmount(res.data.amount.toFixed(2));
+    try {
+      const res = await calculate(data);
+      if (res.data) {
+        setCoef(res.data.vehicleTypeCoefficient);
+        setAmount(res.data.amount.toFixed(2));
+      } else {
+        setCoef('1');
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -74,8 +78,18 @@ export default function Calculator() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
+    setFormData((prev) => ({
+      ...prev,
+      vehicleTypeCoefficient: coef,
+    }));
+
     try {
-      const res = await createPolicy(formData).unwrap();
+      const res = await createPolicy({
+        ...formData,
+        phoneNumber: formData.phoneNumber,
+        vehicleTypeCoefficient: coef,
+      }).unwrap();
+
       if (
         typeof res === 'object' &&
         res !== null &&
@@ -86,6 +100,9 @@ export default function Calculator() {
         setErrorMessage((res as { message: string }).message);
       } else {
         setErrorMessage(null);
+      }
+      if (res && 'paymentUrl' in res && typeof res.paymentUrl === 'string') {
+        window.open(res.paymentUrl, '_blank', 'noopener,noreferrer');
       }
       console.log('createPolicy response:', res);
     } catch (err) {
@@ -98,6 +115,8 @@ export default function Calculator() {
         'message' in errorData
       ) {
         setErrorMessage(errorData.message);
+      } else if (errorData && errorData.keep24 && errorData.keep24.message) {
+        setErrorMessage(errorData.keep24.message);
       } else {
         setErrorMessage('Произошла ошибка при создании полиса');
       }
@@ -269,12 +288,12 @@ export default function Calculator() {
               <button
                 type='submit'
                 disabled={isLoading}
-                className='flex justify-center w-full py-[14px] bg-[#005CAA] rounded-[6px] text-[#fff] text-[16px] mb-[16px]'
+                className='flex justify-center w-full py-[14px] bg-[#005CAA] rounded-[6px] text-[#fff] text-[16px] mb-[16px] disabled:opacity-50 disabled:cursor-not-allowed'
               >
                 {isLoading ? 'Идет рассчет...' : 'Оплатить'}
               </button>
               {errorMessage && (
-                <div className="text-red-600 text-sm mt-2 text-center whitespace-pre-line">
+                <div className='text-red-600 text-sm mt-2 text-center whitespace-pre-line'>
                   {errorMessage}
                 </div>
               )}
