@@ -146,7 +146,7 @@ const DataForms: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const id = userFormData?.vehicle_cert?.vehicleCategory
+    const id = userFormData?.vehicle_cert?.vehicleCategory;
 
     const data = {
       passport: { ...userFormData.passport },
@@ -196,10 +196,6 @@ const DataForms: React.FC = () => {
   const getInputStyle = (value?: string | null) => ({
     borderColor: isEmpty(value) ? '#ef4444' : '#d1d5db',
   });
-
-  // useEffect(() => {
-  //   console.log(userFormData);
-  // }, [userFormData])
 
   return (
     <section className='form-section pt-14 pb-[100px]'>
