@@ -1,0 +1,61 @@
+{
+  "title": "OSAGO",
+  "btn": "Continue",
+  "pay": "Pay",
+  "documents_form": {
+    "title": "Upload documents",
+    "idPassport": "ID passport",
+    "license": "Driver's license",
+    "certificate": "Vehicle registration certificate",
+    "frontSide": "Front side",
+    "backSide": "Back side",
+    "personalData": "I agree to the collection and processing of my personal data."
+  },
+  "home": {
+    "title": "INSURANCE OPERATOR",
+    "OSAGO": "Compulsory motor third party liability insurance",
+    "KASKO": "CASCO",
+    "findPolicy": "Find policy"
+  },
+  "dataForms": {
+    "title": "Data check",
+    "numberPhone": "Phone number",
+    "carUse": "Purpose of vehicle use",
+    "carUsePlac": "For personal purposes",
+    "addressHome": "Actual residence address",
+    "dataID": "ID passport data",
+    "dataDriverID": "Driver's license data",
+    "dataRegisterCar": "Vehicle registration certificate data",
+    "fullName": "Full name",
+    "surname": "Surname",
+    "name": "Name",
+    "patronymic": "Patronymic",
+    "inn": "Tax ID",
+    "partID": "Passport series and number",
+    "partNumber": "Series and number",
+    "organGet": "Issuing authority",
+    "dateGet": "Date of issue"
+  },
+  "calculator": {
+    "title": "OSAGO cost calculator",
+    "quantityDrivers": "Number of drivers",
+    "experienceAge": "Specify the age and experience of the youngest driver",
+    "diagnostic": "Do you have a vehicle inspection card?",
+    "yeah": "Yes",
+    "nauh": "No",
+    "contract": "Have you previously concluded an OSAGO contract?",
+    "insuranceAge": "Specify the insurance period",
+    "price": "Insurance policy cost:",
+    "secPrice": "The cost is indicated including 3% VAT",
+    "som": "som"
+  },
+  "footer": {
+    "phoneNumber": "Phone",
+    "address": "Head office: Bishkek, Ch. Aitmatov Ave. 1, building 2, 4th floor",
+    "naming": "Limited Liability Company 'Operator KG' is an authorized representative (agent) of OJSC 'GSO'.",
+    "OAO": "OJSC 'GSO' has license No. 09, form number 0017 series 'C' dated February 5, 2016, issued by the Service for Regulation and Supervision of the Financial Market under the Ministry of Economy and Commerce of the Kyrgyz Republic.",
+    "email": "Email",
+    "roots": "© 2024 Copyright. All rights reserved.",
+    "GSO": "Open Joint Stock Company 'State Insurance Organization' (OJSC 'GSO') of the Kyrgyz Republic"
+  }
+}
