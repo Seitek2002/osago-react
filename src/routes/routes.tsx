@@ -3,11 +3,15 @@ import Home from '../pages/Home';
 import ChooseForm from '../pages/ChooseForm';
 import ServiceLayout from '../layouts/ServiceLayout';
 import DocumentsForm2 from '../pages/DocumentsForm2';
-import DataForms2 from '../pages/DataForms2';
+// import DataForms2 from '../pages/DataForms2';
+// import DataForms from '../pages/DataForms';
 import Calculator2 from '../pages/Calculator2';
 import Calculator from '../pages/Calculator';
 import DocumentsForm from '../pages/DocumentsForm';
-import DataForms from '../pages/DataForms';
+import { lazy } from 'react';
+
+const DataForms2 = lazy(() => import('../pages/DataForms2'));
+const DataForms = lazy(() => import('../pages/DataForms'));
 
 export const routerConfig: RouteObject[] = [
   {
