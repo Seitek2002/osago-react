@@ -48,6 +48,7 @@ export default function Calculator() {
   const [previousAgreement, setPreviousAgreement] = useState('1');
   const [amount, setAmount] = useState('0');
   const [insuranceDuration, setInsuranceDuration] = useState<string>('15 дней');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const isEmpty = (val?: string | null) => !val || val.trim() === '';
 
@@ -70,9 +71,38 @@ export default function Calculator() {
     getData(formData);
   }, [formData]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    getData(formData);
+    setErrorMessage(null);
+    try {
+      const res = await createPolicy(formData).unwrap();
+      if (
+        typeof res === 'object' &&
+        res !== null &&
+        'result' in res &&
+        (res as any).result === 206 &&
+        'message' in res
+      ) {
+        setErrorMessage((res as { message: string }).message);
+      } else {
+        setErrorMessage(null);
+      }
+      console.log('createPolicy response:', res);
+    } catch (err) {
+      const errorData = (err as any)?.data;
+      if (
+        errorData &&
+        typeof errorData === 'object' &&
+        'result' in errorData &&
+        errorData.result === 206 &&
+        'message' in errorData
+      ) {
+        setErrorMessage(errorData.message);
+      } else {
+        setErrorMessage('Произошла ошибка при создании полиса');
+      }
+      console.log('createPolicy error:', err);
+    }
   };
 
   return (
@@ -237,20 +267,17 @@ export default function Calculator() {
           <footer className='footer w-full mt-[40px]'>
             <div className='footer__content w-full'>
               <button
-                type='button'
+                type='submit'
                 disabled={isLoading}
                 className='flex justify-center w-full py-[14px] bg-[#005CAA] rounded-[6px] text-[#fff] text-[16px] mb-[16px]'
-                onClick={async () => {
-                  try {
-                    const res = await createPolicy(formData).unwrap();
-                    console.log('createPolicy response:', res);
-                  } catch (err) {
-                    console.log('createPolicy error:', err);
-                  }
-                }}
               >
                 {isLoading ? 'Идет рассчет...' : 'Оплатить'}
               </button>
+              {errorMessage && (
+                <div className="text-red-600 text-sm mt-2 text-center whitespace-pre-line">
+                  {errorMessage}
+                </div>
+              )}
             </div>
           </footer>
           <p className='text-[12px]'>
