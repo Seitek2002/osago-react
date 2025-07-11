@@ -143,7 +143,7 @@ const DataForms2: React.FC = () => {
     };
 
     localStorage.setItem('calculateData', JSON.stringify(data));
-    navigate('/calculator-2')
+    navigate('/calculator-2');
     console.log(data);
   };
 
@@ -155,7 +155,7 @@ const DataForms2: React.FC = () => {
 
   useEffect(() => {
     console.log(userFormData);
-  }, [userFormData])
+  }, [userFormData]);
 
   return (
     <section className='form-section pt-14 pb-[100px]'>
@@ -192,9 +192,11 @@ const DataForms2: React.FC = () => {
             <label className='text-suptitle mb-[12px] block' htmlFor='address'>
               Адрес проживания <span className='required text-red-500'>*</span>
             </label>
-            <input
+            <textarea
               required
-              className='form-input w-full bg-[#F7F8FA] rounded-md shadow-sm px-3 py-2 focus:outline-none focus:ring-1 focus:ring-indigo-500 border'
+              className={`form-input w-full bg-[#F7F8FA] rounded-md shadow-sm px-3 py-2 focus:outline-none focus:ring-1 focus:ring-indigo-500 border ${
+                isEmpty(userFormData.address) ? 'h-[42px]' : 'h-auto'
+              }`}
               style={getInputStyle(userFormData.address)}
               id='address'
               placeholder='Введите адрес'

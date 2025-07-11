@@ -1,4 +1,4 @@
-import { useState, type FC } from 'react';
+import { useMemo, useState, type FC } from 'react';
 import type { IFormData } from '../pages/DataForms';
 import warning from '../assets/warning.svg';
 import checked from '../assets/checked.svg';
@@ -30,19 +30,88 @@ const VehicleSertDropdown: FC<IProps> = ({
   const vehicleFields = [
     { label: 'Номер', name: 'number', required: true, type: 'text' },
     { label: 'VIN', name: 'vin', required: true, type: 'text' },
-    { label: 'ФИО владельца', name: 'ownerFullName', required: true, type: 'text' },
-    { label: 'ИНН владельца', name: 'personalNumber', required: true, type: 'text' },
-    { label: 'Адрес владельца', name: 'ownerAddress', required: false, type: 'text' },
-    { label: 'Год выпуска', name: 'yearOfManufacture', required: true, type: 'text' },
+    {
+      label: 'ФИО владельца',
+      name: 'ownerFullName',
+      required: true,
+      type: 'text',
+    },
+    {
+      label: 'ИНН владельца',
+      name: 'personalNumber',
+      required: true,
+      type: 'text',
+    },
+    {
+      label: 'Адрес владельца',
+      name: 'ownerAddress',
+      required: false,
+      type: 'text',
+      isTextArea: true,
+    },
+    {
+      label: 'Год выпуска',
+      name: 'yearOfManufacture',
+      required: true,
+      type: 'text',
+    },
     { label: 'Цвет', name: 'color', required: false, type: 'text' },
-    { label: 'Номер кузова/шасси', name: 'carBodyChassisNumber', required: false, type: 'text' },
+    {
+      label: 'Номер кузова/шасси',
+      name: 'carBodyChassisNumber',
+      required: false,
+      type: 'text',
+    },
     { label: 'Тип кузова', name: 'carBodyType', required: false, type: 'text' },
-    { label: 'Объём двигателя', name: 'engineCapacity', required: false, type: 'text' },
-    { label: 'Масса без нагрузки', name: 'unladenMass', required: false, type: 'text' },
-    { label: 'Максимальная разрешённая масса', name: 'maxPermissibleMass', required: false, type: 'text', isNumber: true },
+    {
+      label: 'Объём двигателя',
+      name: 'engineCapacity',
+      required: false,
+      type: 'text',
+    },
+    {
+      label: 'Масса без нагрузки',
+      name: 'unladenMass',
+      required: false,
+      type: 'text',
+    },
+    {
+      label: 'Максимальная разрешённая масса',
+      name: 'maxPermissibleMass',
+      required: false,
+      type: 'text',
+      isNumber: true,
+    },
     { label: 'Орган выдачи', name: 'authority', required: false, type: 'text' },
-    { label: 'Дата регистрации', name: 'registrationDate', required: true, type: 'date' },
+    {
+      label: 'Дата регистрации',
+      name: 'registrationDate',
+      required: true,
+      type: 'date',
+    },
   ];
+
+  const sortedVehicleFields = useMemo(() => {
+    return vehicleFields.slice().sort((a, b) => {
+      const aVal =
+        userFormData.vehicle_cert[
+          a.name as keyof typeof userFormData.vehicle_cert
+        ];
+      const bVal =
+        userFormData.vehicle_cert[
+          b.name as keyof typeof userFormData.vehicle_cert
+        ];
+      const aEmpty = isEmpty(
+        typeof aVal === 'string' || typeof aVal === 'number' ? String(aVal) : ''
+      );
+      const bEmpty = isEmpty(
+        typeof bVal === 'string' || typeof bVal === 'number' ? String(bVal) : ''
+      );
+      if (aEmpty === bEmpty) return 0;
+      return aEmpty ? -1 : 1;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className='w-full relative border border-[#E5E7EB] rounded-[10px] overflow-hidden transition-colors mb-4'>
@@ -71,34 +140,97 @@ const VehicleSertDropdown: FC<IProps> = ({
         } w-full bg-white border border-[#E5E7EB] shadow-lg p-2`}
       >
         <div>
-          {vehicleFields
-            .slice()
-            .sort((a, b) => {
-              const aVal = userFormData.vehicle_cert[a.name as keyof typeof userFormData.vehicle_cert];
-              const bVal = userFormData.vehicle_cert[b.name as keyof typeof userFormData.vehicle_cert];
-              const aEmpty = isEmpty(typeof aVal === 'string' || typeof aVal === 'number' ? String(aVal) : '');
-              const bEmpty = isEmpty(typeof bVal === 'string' || typeof bVal === 'number' ? String(bVal) : '');
-              if (aEmpty === bEmpty) return 0;
-              return aEmpty ? -1 : 1;
-            })
-            .map((field) => (
-              <div className='dropdown__details-card bg-white rounded-xl flex flex-col gap-4 mb-4' key={field.name}>
-                <div className='dropdown__detail flex flex-col gap-1'>
-                  <span className='litle-title text-[#6B7280] text-[14px] font-medium mb-1'>
-                    {field.label}
-                  </span>
-                  <input
-                    required={field.required}
-                    type={field.type}
-                    className={`litle-input ${field.type === 'date' ? 'w-full' : ''} bg-white rounded-[8px] py-2 px-3 text-[16px] text-[#201F1F] placeholder:text-[#ADB0BA] outline-none transition-colors border focus:ring-1 focus:ring-indigo-500`}
+          {sortedVehicleFields.map((field) => (
+            <div
+              className='dropdown__details-card bg-white rounded-xl flex flex-col gap-4 mb-4'
+              key={field.name}
+            >
+              <div className='dropdown__detail flex flex-col gap-1'>
+                <span className='litle-title text-[#6B7280] text-[14px] font-medium mb-1'>
+                  {field.label}
+                </span>
+                {field.isTextArea ? (
+                  <textarea
+                    className={`litle-input bg-white rounded-[8px] py-2 px-3 text-[16px] text-[#201F1F] placeholder:text-[#ADB0BA] outline-none transition-colors border focus:ring-1 focus:ring-indigo-500 ${
+                      isEmpty(
+                        userFormData.vehicle_cert[
+                          field.name as keyof typeof userFormData.vehicle_cert
+                        ] as string
+                      )
+                        ? 'h-[42px]'
+                        : 'h-auto'
+                    }`}
                     style={getInputStyle(
-                      typeof userFormData.vehicle_cert[field.name as keyof typeof userFormData.vehicle_cert] === 'string' || typeof userFormData.vehicle_cert[field.name as keyof typeof userFormData.vehicle_cert] === 'number'
-                        ? String(userFormData.vehicle_cert[field.name as keyof typeof userFormData.vehicle_cert])
+                      typeof userFormData.vehicle_cert[
+                        field.name as keyof typeof userFormData.vehicle_cert
+                      ] === 'string' ||
+                        typeof userFormData.vehicle_cert[
+                          field.name as keyof typeof userFormData.vehicle_cert
+                        ] === 'number'
+                        ? String(
+                            userFormData.vehicle_cert[
+                              field.name as keyof typeof userFormData.vehicle_cert
+                            ]
+                          )
                         : ''
                     )}
                     value={
-                      typeof userFormData.vehicle_cert[field.name as keyof typeof userFormData.vehicle_cert] === 'string' || typeof userFormData.vehicle_cert[field.name as keyof typeof userFormData.vehicle_cert] === 'number'
-                        ? String(userFormData.vehicle_cert[field.name as keyof typeof userFormData.vehicle_cert] ?? '')
+                      typeof userFormData.vehicle_cert[
+                        field.name as keyof typeof userFormData.vehicle_cert
+                      ] === 'string' ||
+                      typeof userFormData.vehicle_cert[
+                        field.name as keyof typeof userFormData.vehicle_cert
+                      ] === 'number'
+                        ? String(
+                            userFormData.vehicle_cert[
+                              field.name as keyof typeof userFormData.vehicle_cert
+                            ] ?? ''
+                          )
+                        : ''
+                    }
+                    onChange={(e) =>
+                      setUserFormData((prev: IFormData) => ({
+                        ...prev,
+                        vehicle_cert: {
+                          ...prev.vehicle_cert,
+                          [field.name]: e.target.value,
+                        },
+                      }))
+                    }
+                  />
+                ) : (
+                  <input
+                    required={field.required}
+                    type={field.type}
+                    className={`litle-input ${
+                      field.type === 'date' ? 'w-full' : ''
+                    } bg-white rounded-[8px] py-2 px-3 text-[16px] text-[#201F1F] placeholder:text-[#ADB0BA] outline-none transition-colors border focus:ring-1 focus:ring-indigo-500`}
+                    style={getInputStyle(
+                      typeof userFormData.vehicle_cert[
+                        field.name as keyof typeof userFormData.vehicle_cert
+                      ] === 'string' ||
+                        typeof userFormData.vehicle_cert[
+                          field.name as keyof typeof userFormData.vehicle_cert
+                        ] === 'number'
+                        ? String(
+                            userFormData.vehicle_cert[
+                              field.name as keyof typeof userFormData.vehicle_cert
+                            ]
+                          )
+                        : ''
+                    )}
+                    value={
+                      typeof userFormData.vehicle_cert[
+                        field.name as keyof typeof userFormData.vehicle_cert
+                      ] === 'string' ||
+                      typeof userFormData.vehicle_cert[
+                        field.name as keyof typeof userFormData.vehicle_cert
+                      ] === 'number'
+                        ? String(
+                            userFormData.vehicle_cert[
+                              field.name as keyof typeof userFormData.vehicle_cert
+                            ] ?? ''
+                          )
                         : ''
                     }
                     onChange={(e) =>
@@ -113,9 +245,10 @@ const VehicleSertDropdown: FC<IProps> = ({
                       }))
                     }
                   />
-                </div>
+                )}
               </div>
-            ))}
+            </div>
+          ))}
           {/* Расположение руля */}
           <div className='dropdown__details-card bg-white rounded-xl flex flex-col gap-4 mb-4'>
             <SteeringLocation
