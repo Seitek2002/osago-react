@@ -58,6 +58,20 @@ export interface IFormData {
 
 const localData = JSON.parse(localStorage.getItem('ocrData') || '{}');
 
+const FORM_STORAGE_KEY = 'formData2';
+
+const getInitialFormState = () => {
+  const saved = localStorage.getItem(FORM_STORAGE_KEY);
+  if (saved) {
+    try {
+      return JSON.parse(saved);
+    } catch {
+      return initialFormState;
+    }
+  }
+  return initialFormState;
+};
+
 const initialFormState: IFormData = {
   phoneNumber: '',
   passport: localData.passport?.data ?? {},
@@ -70,7 +84,9 @@ const initialFormState: IFormData = {
 
 const DataForms2: React.FC = () => {
   const navigate = useNavigate();
-  const [userFormData, setUserFormData] = useState<IFormData>(initialFormState);
+  const [userFormData, setUserFormData] = useState<IFormData>(
+    getInitialFormState()
+  );
 
   // Валидация паспорта по требованиям пользователя
   const isPassportValid =
@@ -154,7 +170,7 @@ const DataForms2: React.FC = () => {
   });
 
   useEffect(() => {
-    console.log(userFormData);
+    localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(userFormData));
   }, [userFormData]);
 
   return (
