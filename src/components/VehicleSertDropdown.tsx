@@ -84,7 +84,7 @@ const VehicleSertDropdown: FC<IProps> = ({
       isNumber: true,
       hidden: true,
     },
-    { label: 'Орган выдачи', name: 'authority', required: false, type: 'text' },
+    { label: 'Орган выдачи', name: 'authority', required: false, type: 'text', hidden: true },
     {
       label: 'Дата регистрации',
       name: 'registrationDate',
