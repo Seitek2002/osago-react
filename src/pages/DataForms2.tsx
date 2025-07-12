@@ -88,39 +88,33 @@ const DataForms2: React.FC = () => {
     getInitialFormState()
   );
 
-  // Валидация паспорта по требованиям пользователя
+  // Валидация паспорта по требованиям пользователя (только required из JSON)
   const isPassportValid =
     !!userFormData.passport.surname &&
     !!userFormData.passport.name &&
-    !!userFormData.passport.gender &&
     !!userFormData.passport.birthDate &&
     !!userFormData.passport.series &&
     !!userFormData.passport.number &&
-    !!userFormData.passport.expiryDate &&
-    !!userFormData.passport.authority &&
     !!userFormData.passport.issueDate &&
     !!userFormData.passport.personalNumber;
 
-  // Валидация техпаспорта по требованиям пользователя
+  // Валидация техпаспорта по требованиям пользователя (только required из JSON)
   const isVehicleCertValid =
+    !!userFormData.vehicle_cert.number &&
+    !!userFormData.vehicle_cert.vin &&
+    !!userFormData.vehicle_cert.ownerFullName &&
+    !!userFormData.vehicle_cert.personalNumber &&
     !!userFormData.vehicle_cert.brandId &&
     !!userFormData.vehicle_cert.carModelId &&
     !!userFormData.vehicle_cert.steeringLocation &&
     !!userFormData.vehicle_cert.engineType &&
     !!userFormData.vehicle_cert.yearOfManufacture &&
-    !!userFormData.vehicle_cert.vehicleCategory &&
-    !!userFormData.vehicle_cert.engineCapacity &&
-    !!userFormData.vehicle_cert.maxPermissibleMass &&
-    !!userFormData.vehicle_cert.number &&
-    !!userFormData.vehicle_cert.vin &&
-    !!userFormData.vehicle_cert.ownerFullName &&
-    !!userFormData.vehicle_cert.personalNumber &&
-    !!userFormData.vehicle_cert.registrationDate;
+    !!userFormData.vehicle_cert.vehicleCategory;
 
   const isFormValid =
     !!userFormData.phoneNumber &&
-    !!userFormData.address &&
-    userFormData.purpose.name !== 'Выберите цель' &&
+    !!userFormData.purpose.id &&
+    userFormData.unlimitedDrivers === true &&
     isPassportValid &&
     isVehicleCertValid;
 
@@ -203,13 +197,12 @@ const DataForms2: React.FC = () => {
             />
           </div>
 
-          {/* Адрес */}
+          {/* Адрес (необязательный) */}
           <div className='form-group mt-4'>
             <label className='text-suptitle mb-[12px] block' htmlFor='address'>
-              Адрес проживания <span className='required text-red-500'>*</span>
+              Адрес проживания
             </label>
             <textarea
-              required
               className={`form-input w-full bg-[#F7F8FA] rounded-md shadow-sm px-3 py-2 focus:outline-none focus:ring-1 focus:ring-indigo-500 border ${
                 isEmpty(userFormData.address) ? 'h-[42px]' : 'h-auto'
               }`}

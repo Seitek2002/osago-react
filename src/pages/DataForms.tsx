@@ -95,54 +95,38 @@ const DataForms: React.FC = () => {
   const navigate = useNavigate();
   const [userFormData, setUserFormData] = useState<IFormData>(initialFormState);
 
-  // Валидация паспорта по требованиям пользователя
+  // Валидация паспорта по требованиям пользователя (только required из JSON)
   const isPassportValid =
     !!userFormData.passport.surname &&
     !!userFormData.passport.name &&
-    !!userFormData.passport.gender &&
     !!userFormData.passport.birthDate &&
     !!userFormData.passport.series &&
     !!userFormData.passport.number &&
-    !!userFormData.passport.expiryDate &&
-    !!userFormData.passport.authority &&
     !!userFormData.passport.issueDate &&
     !!userFormData.passport.personalNumber;
 
-  // Валидация техпаспорта по требованиям пользователя
+  // Валидация техпаспорта по требованиям пользователя (только required из JSON)
   const isVehicleCertValid =
+    !!userFormData.vehicle_cert.number &&
+    !!userFormData.vehicle_cert.vin &&
+    !!userFormData.vehicle_cert.ownerFullName &&
+    !!userFormData.vehicle_cert.personalNumber &&
     !!userFormData.vehicle_cert.brandId &&
     !!userFormData.vehicle_cert.carModelId &&
     !!userFormData.vehicle_cert.steeringLocation &&
     !!userFormData.vehicle_cert.engineType &&
     !!userFormData.vehicle_cert.yearOfManufacture &&
-    !!userFormData.vehicle_cert.vehicleCategory &&
-    !!userFormData.vehicle_cert.engineCapacity &&
-    !!userFormData.vehicle_cert.maxPermissibleMass &&
-    !!userFormData.vehicle_cert.number &&
-    !!userFormData.vehicle_cert.vin &&
-    !!userFormData.vehicle_cert.ownerFullName &&
-    !!userFormData.vehicle_cert.personalNumber &&
-    !!userFormData.vehicle_cert.registrationDate;
+    !!userFormData.vehicle_cert.vehicleCategory;
 
-  const isDriverLicenseValid =
-    !!userFormData?.driverLicense?.surname &&
-    !!userFormData?.driverLicense.name &&
-    !!userFormData?.driverLicense.birthDate &&
-    !!userFormData?.driverLicense.issueDate &&
-    !!userFormData?.driverLicense.expiryDate &&
-    !!userFormData?.driverLicense.authority &&
-    !!userFormData?.driverLicense.personalNumber &&
-    !!userFormData?.driverLicense.licenceNumber &&
-    !!userFormData?.driverLicense.categories &&
-    Object.keys(userFormData.driverLicense.categories).length > 0; // проверка, что не пустой
+  // Водительское удостоверение не обязательно
+  // (isDriverLicenseValid больше не используется)
 
   const isFormValid =
     !!userFormData.phoneNumber &&
-    !!userFormData.address &&
-    userFormData.purpose.name !== 'Выберите цель' &&
+    !!userFormData.purpose.id &&
+    userFormData.unlimitedDrivers === true &&
     isPassportValid &&
-    isVehicleCertValid &&
-    isDriverLicenseValid;
+    isVehicleCertValid;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -227,13 +211,12 @@ const DataForms: React.FC = () => {
             />
           </div>
 
-          {/* Адрес */}
+          {/* Адрес (необязательный) */}
           <div className='form-group mt-4'>
             <label className='text-suptitle mb-[12px] block' htmlFor='address'>
-              Адрес проживания <span className='required text-red-500'>*</span>
+              Адрес проживания
             </label>
             <input
-              required
               className='form-input w-full bg-[#F7F8FA] rounded-md shadow-sm px-3 py-2 focus:outline-none focus:ring-1 focus:ring-indigo-500 border'
               style={getInputStyle(userFormData.address)}
               id='address'
@@ -266,7 +249,7 @@ const DataForms: React.FC = () => {
             isPassportValid={isPassportValid}
           />
 
-          {/* Блок водительских прав */}
+          {/* Блок водительских прав (необязательный) */}
           <DriverLicenceDropdown
             userFormData={userFormData}
             setUserFormData={setUserFormData}
