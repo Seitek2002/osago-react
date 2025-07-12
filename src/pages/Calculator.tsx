@@ -221,11 +221,11 @@ export default function Calculator() {
             <div></div>
           )}
 
-          <h3 className='text-suptitle font-semibold'>
+          <h3 className='text-suptitle font-semibold hidden'>
             Заключали ли Вы раньше договор ОСАГО?{' '}
             <span className='text-[#FC3400]'>*</span>
           </h3>
-          <div className='radio-group grid grid-cols-2 gap-5'>
+          <div className='radio-group grid grid-cols-2 gap-5 hidden'>
             <label className='flex items-center bg-[#F7F8FA] border border-gray-300 rounded-md shadow-sm p-[12px]'>
               <input
                 type='radio'
@@ -247,6 +247,7 @@ export default function Calculator() {
               Нет
             </label>
           </div>
+
           <h3 className='text-suptitle font-semibold'>
             Укажите срок страхования <span className='text-[#FC3400]'>*</span>
           </h3>
