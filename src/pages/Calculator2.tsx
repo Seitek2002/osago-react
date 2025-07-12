@@ -260,7 +260,7 @@ export default function Calculator2() {
                   setInsuranceDuration(val);
                   setFormData((prev) => ({
                     ...prev,
-                    endDate: getFutureDate(insuranceDuration),
+                    endDate: getFutureDate(val),
                   }));
                 }}
                 className={`px-4 py-2 border rounded-lg text-[14px] ${
