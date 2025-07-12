@@ -16,6 +16,7 @@ const CarModel: FC<IProps> = ({ userFormData, setUserFormData }) => {
   const brandId = userFormData.vehicle_cert.brandId ?? 1;
   const { data: carModels, isLoading, error } = useGetCarModelsQuery(brandId);
   const [isOpenModels, setIsOpenModels] = useState(false);
+  const [inputValue, setInputValue] = useState('');
 
   const handleCarModelClick = (item: ICarModel) => {
     setUserFormData((prev) => ({
@@ -29,7 +30,7 @@ const CarModel: FC<IProps> = ({ userFormData, setUserFormData }) => {
     setIsOpenModels(false);
   };
 
-  if(!brandId) return null
+  if (!brandId) return null;
 
   return (
     <div>
@@ -68,15 +69,32 @@ const CarModel: FC<IProps> = ({ userFormData, setUserFormData }) => {
             <div className='px-4 py-2 text-red-500'>Ошибка загрузки</div>
           )}
           <ul className='space-y-2'>
-            {carModels?.map((model) => (
-              <li
-                key={model.id}
-                className='px-4 py-2 cursor-pointer hover:bg-[#F5F5F5] text-[16px] text-[#201F1F] rounded-[8px] transition-colors'
-                onClick={() => handleCarModelClick(model)}
-              >
-                {model.name}
-              </li>
-            ))}
+            <li>
+              <input
+                type='text'
+                placeholder='Поиск модели'
+                className='w-full border rounded-[10px] py-3 px-[14px] text-[16px] text-[#201F1F] outline-none transition-colors'
+                onChange={(e) => setInputValue(e.target.value)}
+                value={inputValue}
+              />
+            </li>
+            {carModels
+              ?.filter((item) => {
+                if (inputValue.trim()) {
+                  return item.name.toLowerCase().includes(inputValue.trim());
+                } else {
+                  return item;
+                }
+              })
+              ?.map((model) => (
+                <li
+                  key={model.id}
+                  className='px-4 py-2 cursor-pointer hover:bg-[#F5F5F5] text-[16px] text-[#201F1F] rounded-[8px] transition-colors'
+                  onClick={() => handleCarModelClick(model)}
+                >
+                  {model.name}
+                </li>
+              ))}
           </ul>
         </div>
       </div>
