@@ -59,15 +59,16 @@ export default function Calculator2() {
 
   const getData = async (data: IInsuranceData) => {
     try {
-      const res = await calculate(data);
-      if (res.data) {
-        setCoef(res.data.vehicleTypeCoefficient);
-        setAmount(res.data.amount.toFixed(2));
+      const res = await calculate(data).unwrap();
+      if (res) {
+        setCoef(res.vehicleTypeCoefficient);
+        setAmount(res.amount.toFixed(2));
       } else {
         setCoef('1');
       }
     } catch (err) {
       console.log(err);
+      setErrorMessage(err.data.keep24 || 'Ошибка');
     }
   };
 
