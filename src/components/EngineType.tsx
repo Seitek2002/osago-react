@@ -30,7 +30,17 @@ const EngineType: FC<IProps> = ({ userFormData, setUserFormData }) => {
   };
 
   const selected = ENGINE_TYPES.find(
-    (t) => t.value === userFormData.vehicle_cert.engineType
+    (t) => {
+      if(userFormData.vehicle_cert.engineType) {
+        return t.value === userFormData.vehicle_cert.engineType
+      } else {
+          if(userFormData.vehicle_cert.enginePower) {
+            return t.value === 'ELECTRIC'
+          } else if(userFormData.vehicle_cert.engineCapacity) {
+            return t.value === 'ICE'
+          }
+      }
+    }
   );
 
   return (

@@ -76,7 +76,7 @@ const initialFormState: IFormData = {
   phoneNumber: '',
   passport: localData.passport?.data ?? {},
   vehicle_cert: localData.vehicle_cert?.data ?? {},
-  purpose: { name: 'Выберите цель' },
+  purpose: { name: 'Личная', id: 2 },
   address: localData.vehicle_cert?.data?.ownerAddress ?? '',
   unlimitedDrivers: true,
   referralCode: undefined,
