@@ -46,9 +46,9 @@ export default function Calculator2() {
     JSON.parse(localStorage.getItem('calculateData') || '{}')
   );
   const [diagnosticCard, setDiagnosticCard] = useState('false');
-  const [previousAgreement, setPreviousAgreement] = useState('1');
+  const [previousAgreement, setPreviousAgreement] = useState('0');
   const [amount, setAmount] = useState('0');
-  const [insuranceDuration, setInsuranceDuration] = useState<string>('15 дней');
+  const [insuranceDuration, setInsuranceDuration] = useState<string>('12 месяцев');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const isEmpty = (val?: string | null) => !val || val.trim() === '';
@@ -254,7 +254,7 @@ export default function Calculator2() {
               '9 месяцев',
               '12 месяцев',
             ].map((val) => (
-              <button
+              <div
                 key={val}
                 onClick={() => {
                   setInsuranceDuration(val);
@@ -263,14 +263,14 @@ export default function Calculator2() {
                     endDate: getFutureDate(val),
                   }));
                 }}
-                className={`px-4 py-2 border rounded-lg text-[14px] ${
+                className={`px-4 py-2 border rounded-lg text-[14px] text-center ${
                   insuranceDuration === val
                     ? 'border-[#005CAA] bg-[#005CAA14]'
                     : ''
                 }`}
               >
                 {val}
-              </button>
+              </div>
             ))}
           </div>
         </div>
