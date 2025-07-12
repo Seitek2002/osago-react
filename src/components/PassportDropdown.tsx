@@ -59,19 +59,28 @@ const PassportDropdown: FC<IProps> = ({
       name: 'expiryDate',
       required: false,
       type: 'date',
+      hidden: true,
     },
     {
       label: 'Место рождения',
       name: 'birthPlace',
       required: false,
       type: 'text',
+      hidden: true,
     },
-    { label: 'Орган выдачи', name: 'authority', required: false, type: 'text' },
+    {
+      label: 'Орган выдачи',
+      name: 'authority',
+      required: false,
+      type: 'text',
+      hidden: true,
+    },
     {
       label: 'Этническая принадлежность',
       name: 'ethnicity',
       required: false,
       type: 'text',
+      hidden: true,
     },
   ];
 
@@ -119,7 +128,11 @@ const PassportDropdown: FC<IProps> = ({
           {sortedFields.map((field) => {
             return (
               <div
-                className='dropdown__details-card bg-white rounded-xl flex flex-col gap-4 mb-4'
+                className={
+                  field.hidden
+                    ? 'dropdown__details-card bg-white rounded-xl hidden flex-col gap-4 mb-4'
+                    : 'dropdown__details-card bg-white rounded-xl flex flex-col gap-4 mb-4'
+                }
                 key={field.name}
               >
                 <div className='dropdown__detail flex flex-col gap-1'>

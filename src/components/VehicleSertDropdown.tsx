@@ -55,7 +55,13 @@ const VehicleSertDropdown: FC<IProps> = ({
       required: true,
       type: 'text',
     },
-    { label: 'Цвет', name: 'color', required: false, type: 'text' },
+    {
+      label: 'Цвет',
+      name: 'color',
+      required: false,
+      type: 'text',
+      hidden: true,
+    },
     {
       label: 'Номер кузова/шасси',
       name: 'carBodyChassisNumber',
@@ -74,6 +80,7 @@ const VehicleSertDropdown: FC<IProps> = ({
       name: 'unladenMass',
       required: false,
       type: 'text',
+      hidden: true,
     },
     {
       label: 'Максимальная разрешённая масса',
@@ -81,6 +88,7 @@ const VehicleSertDropdown: FC<IProps> = ({
       required: false,
       type: 'text',
       isNumber: true,
+      hidden: true,
     },
     { label: 'Орган выдачи', name: 'authority', required: false, type: 'text' },
     {
@@ -142,7 +150,11 @@ const VehicleSertDropdown: FC<IProps> = ({
         <div>
           {sortedVehicleFields.map((field) => (
             <div
-              className='dropdown__details-card bg-white rounded-xl flex flex-col gap-4 mb-4'
+              className={
+                field.hidden
+                  ? 'dropdown__details-card bg-white rounded-xl flex-col gap-4 mb-4 hidden'
+                  : 'dropdown__details-card bg-white rounded-xl flex flex-col gap-4 mb-4'
+              }
               key={field.name}
             >
               <div className='dropdown__detail flex flex-col gap-1'>

@@ -63,7 +63,7 @@ const DriverLicenseDropdown: FC<DriverLicenseDropdownProps> = ({
     { label: 'Фамилия', name: 'surname', required: true, type: 'text' },
     { label: 'Имя', name: 'name', required: true, type: 'text' },
     { label: 'Дата рождения', name: 'birthDate', required: true, type: 'date' },
-    { label: 'Место рождения', name: 'birthPlace', required: false, type: 'text' },
+    { label: 'Место рождения', name: 'birthPlace', required: false, type: 'text', hidden: true },
     { label: '№ удостоверения', name: 'licenceNumber', required: true, type: 'text' },
     { label: 'ИНН', name: 'personalNumber', required: true, type: 'text' },
     { label: 'Адрес проживания', name: 'residence', required: false, type: 'text' },
@@ -108,7 +108,7 @@ const DriverLicenseDropdown: FC<DriverLicenseDropdownProps> = ({
               return aEmpty ? -1 : 1;
             })
             .map((field) => (
-              <div className='dropdown__details-card bg-white rounded-xl flex flex-col gap-4 mb-4' key={field.name}>
+              <div className={field.hidden ? 'dropdown__details-card bg-white rounded-xl hidden flex-col gap-4 mb-4' : 'dropdown__details-card bg-white rounded-xl flex flex-col gap-4 mb-4'} key={field.name}>
                 <label className='text-[14px] font-medium text-[#6B7280] mb-1'>
                   {field.label}
                 </label>
