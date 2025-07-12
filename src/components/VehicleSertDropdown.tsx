@@ -70,12 +70,6 @@ const VehicleSertDropdown: FC<IProps> = ({
     },
     { label: 'Тип кузова', name: 'carBodyType', required: false, type: 'text' },
     {
-      label: 'Объём двигателя',
-      name: 'engineCapacity',
-      required: false,
-      type: 'text',
-    },
-    {
       label: 'Масса без нагрузки',
       name: 'unladenMass',
       required: false,
