@@ -66,7 +66,7 @@ export default function Calculator2() {
       } else {
         setCoef('1');
       }
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
       setErrorMessage(err.data.keep24 || 'Ошибка');
     }
