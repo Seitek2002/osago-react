@@ -1,4 +1,4 @@
-import { useState, type FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 import { useGetPurposeQuery, type IPurpose } from '../store/purposeApi';
 import type { IFormData } from '../pages/DataForms';
 
@@ -26,6 +26,12 @@ const PurposeDropdown: FC<IProps> = ({ userFormData, setUserFormData }) => {
     setIsOpenUseCar(false);
     setTouchedFields((prev) => ({ ...prev, purpose: true }));
   };
+
+  useEffect(() => {
+    if (userFormData.purpose.name) {
+      handlePurposeClick({ id: 2, name: 'Личная' });
+    }
+  }, [])
 
   return (
     <div>
