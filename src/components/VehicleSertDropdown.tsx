@@ -264,7 +264,8 @@ const VehicleSertDropdown: FC<IProps> = ({
             />
           </div>
           {/* Мощность двигателя */}
-          {userFormData.vehicle_cert.engineType !== 'ELECTRIC' && (
+          {/* engineType = ICE(обьем) or ELECTRIC(мощность) */}
+          {userFormData.vehicle_cert.engineType == 'ELECTRIC' && (
             <div className='dropdown__details-card bg-white rounded-xl flex flex-col gap-4 mb-4'>
               <div className='dropdown__detail flex flex-col gap-1'>
                 <span className='litle-title text-[#6B7280] text-[14px] font-medium mb-1'>
@@ -288,6 +289,33 @@ const VehicleSertDropdown: FC<IProps> = ({
               </div>
             </div>
           )}
+          {userFormData.vehicle_cert.engineType === 'ICE' && (
+            <div className='dropdown__details-card bg-white rounded-xl flex flex-col gap-4 mb-4'>
+              <div className='dropdown__detail flex flex-col gap-1'>
+                <span className='litle-title text-[#6B7280] text-[14px] font-medium mb-1'>
+                  Объём двигателя
+                </span>
+                <input
+                  type='text'
+                  className='litle-input bg-white rounded-[8px] py-2 px-3 text-[16px] text-[#201F1F] placeholder:text-[#ADB0BA] outline-none transition-colors border focus:ring-1 focus:ring-indigo-500'
+                  style={getInputStyle(
+                    userFormData.vehicle_cert.engineCapacity
+                  )}
+                  value={userFormData.vehicle_cert.engineCapacity || ''}
+                  onChange={(e) =>
+                    setUserFormData((prev: IFormData) => ({
+                      ...prev,
+                      vehicle_cert: {
+                        ...prev.vehicle_cert,
+                        engineCapacity: e.target.value,
+                      },
+                    }))
+                  }
+                />
+              </div>
+            </div>
+          )}
+          {userFormData.vehicle_cert.engineType === ''}
           {/* Категория ТС */}
           <div className='dropdown__details-card bg-white rounded-xl flex flex-col gap-4 mb-4'>
             <div className='dropdown__detail flex flex-col gap-1'>
